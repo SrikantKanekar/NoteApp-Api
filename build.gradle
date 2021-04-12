@@ -15,7 +15,7 @@ apply plugin: 'kotlinx-serialization'
 
 group 'com.example'
 version '0.0.1'
-mainClassName = "io.ktor.server.netty.EngineMain"
+mainClassName = "com.example.ApplicationKt"
 
 task stage {
     dependsOn installDist
