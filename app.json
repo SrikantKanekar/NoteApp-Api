@@ -1,0 +1,6 @@
+{
+  "name": "Note Server",
+  "description": "A Ktor Note Server app, which is used as backend by android client",
+  "image": "heroku/java",
+  "addons": [ "" ]
+}
