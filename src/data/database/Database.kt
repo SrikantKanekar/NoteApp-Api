@@ -8,8 +8,9 @@ import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.reactivestreams.KMongo
 
-private val connectionString = System.getenv("key") ?: "mongodb://localhost"
-private val client = KMongo.createClient(connectionString).coroutine
+private val client = KMongo.createClient(
+    "mongodb+srv://admin:Lambhorghini1$@notedb.afkrf.mongodb.net/Database?retryWrites=true&w=majority"
+).coroutine
 private val database = client.getDatabase("Database")
 private val users = database.getCollection<User>()
 
