@@ -9,7 +9,7 @@ import org.litote.kmongo.eq
 import org.litote.kmongo.reactivestreams.KMongo
 
 private val client = KMongo.createClient(
-    "mongodb+srv://admin:Lambhorghini1$@notedb.afkrf.mongodb.net/Database?retryWrites=true&w=majority"
+    "mongodb+srv://admin:xwtAdn7goC21S6HO@noteappcluster.pt50t.mongodb.net/Database?retryWrites=true&w=majority"
 ).coroutine
 private val database = client.getDatabase("Database")
 private val users = database.getCollection<User>()
