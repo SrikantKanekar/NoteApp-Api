@@ -6,6 +6,7 @@ import com.example.data.response.SimpleResponse
 import com.example.security.checkHashForPassword
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
+import org.litote.kmongo.not
 import org.litote.kmongo.reactivestreams.KMongo
 
 private val client = KMongo.createClient(
@@ -84,12 +85,18 @@ suspend fun getAllNotes(email: String): List<Note> {
     return user.notes
 }
 
-suspend fun deleteNote(email: String, note: Note): SimpleResponse {
+suspend fun deleteNote(email: String, noteId: String): SimpleResponse {
     val user = users.findOne(User::email eq email)!!
     var message = ""
-    val index = user.notes.indexOf(note)
-    when (index) {
-        -1 -> {
+    var note: Note? = null
+    for (it in user.notes) {
+        if (it.id == noteId){
+            note = it
+            break
+        }
+    }
+    when (note) {
+        null -> {
             message = "Note not found"
         }
         else -> {

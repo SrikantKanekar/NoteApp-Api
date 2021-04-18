@@ -72,13 +72,13 @@ fun Route.noteRoute() {
         authenticate {
             post {
                 val email = call.principal<UserIdPrincipal>()!!.name
-                val note = try {
-                    call.receive<Note>()
+                val noteId = try {
+                    call.receive<String>()
                 } catch (e: ContentTransformationException) {
                     call.respond(HttpStatusCode.BadRequest, "Json Error")
                     return@post
                 }
-                val result = deleteNote(email, note)
+                val result = deleteNote(email, noteId)
                 call.respond(HttpStatusCode.OK, result)
             }
         }
