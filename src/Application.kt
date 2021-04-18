@@ -34,7 +34,7 @@ fun Application.module(testing: Boolean = false) {
     }
 
     routing {
-        testRoute()
+        homeRoute()
         registerRoute()
         loginRoute()
         noteRoute()
