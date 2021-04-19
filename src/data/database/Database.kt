@@ -6,12 +6,11 @@ import com.example.data.response.SimpleResponse
 import com.example.security.checkHashForPassword
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
-import org.litote.kmongo.not
 import org.litote.kmongo.reactivestreams.KMongo
 
-private val client = KMongo.createClient(
+private val connectionString =
     "mongodb+srv://admin:xwtAdn7goC21S6HO@noteappcluster.pt50t.mongodb.net/Database?retryWrites=true&w=majority"
-).coroutine
+private val client = KMongo.createClient().coroutine
 private val database = client.getDatabase("Database")
 private val users = database.getCollection<User>()
 
@@ -43,7 +42,7 @@ suspend fun insertOrUpdateNote(email: String, note: Note): SimpleResponse {
         }
         else -> {
             user.notes[index] = note
-            message = "Note Updated"
+            message = "Note Updated at index $index"
         }
     }
     val updated = users.updateOne(User::email eq email, user).wasAcknowledged()
@@ -71,13 +70,16 @@ suspend fun insertOrUpdateNotes(email: String, notes: List<Note>): SimpleRespons
     return SimpleResponse(updated, "Added $added and updated $update")
 }
 
-suspend fun searchNote(email: String, note: Note): Note? {
+suspend fun getNote(email: String, noteId: String): Note? {
     val user = users.findOne(User::email eq email)!!
-    val index = user.notes.indexOf(note)
-    when (index) {
-        -1 -> return null
-        else -> return user.notes[index]
+    var note: Note? = null
+    for (it in user.notes) {
+        if (it.id == noteId) {
+            note = it
+            break
+        }
     }
+    return note
 }
 
 suspend fun getAllNotes(email: String): List<Note> {
@@ -90,7 +92,7 @@ suspend fun deleteNote(email: String, noteId: String): SimpleResponse {
     var message = ""
     var note: Note? = null
     for (it in user.notes) {
-        if (it.id == noteId){
+        if (it.id == noteId) {
             note = it
             break
         }
@@ -118,18 +120,22 @@ suspend fun deleteAllNotes(email: String): SimpleResponse {
 
 
 // Deleted Notes
-suspend fun insertDeletedNote(email: String, note: Note): SimpleResponse {
+suspend fun insertDeletedNote(email: String, noteId: String): SimpleResponse {
     val user = users.findOne(User::email eq email)!!
-    var message = ""
-    val index = user.deletedNotes.indexOf(note)
-    when (index) {
-        -1 -> {
+    var message = "Note not present in note folder"
+    var note: Note? = null
+    for (it in user.notes) {
+        if (it.id == noteId) {
+            note = it
+            break
+        }
+    }
+    note?.let {
+        if (!user.deletedNotes.contains(note)) {
             user.deletedNotes.add(note)
             message = "Note added to delete folder"
-        }
-        else -> {
-            user.deletedNotes[index] = note
-            message = "note updated in delete folder"
+        } else {
+            message = "Note is already present in delete folder"
         }
     }
     val updated = users.updateOne(User::email eq email, user).wasAcknowledged()
@@ -162,19 +168,22 @@ suspend fun getDeletedNotes(email: String): List<Note> {
     return user.deletedNotes
 }
 
-suspend fun deleteDeletedNote(email: String, note: Note): SimpleResponse {
+suspend fun deleteDeletedNote(email: String, noteId: String): SimpleResponse {
     val user = users.findOne(User::email eq email)!!
-    var message = ""
-    val index = user.deletedNotes.indexOf(note)
-    when (index) {
-        -1 -> {
-            message = "Note not found in delete folder"
-        }
-        else -> {
-            user.deletedNotes.remove(note)
-            message = "Note removed from delete folder"
+    var message = "note not present in delete folder"
+    var note: Note? = null
+    for (it in user.deletedNotes) {
+        if (it.id == noteId) {
+            note = it
+            break
         }
     }
+
+    note?.let {
+        user.deletedNotes.remove(note)
+        message = "Note removed from delete folder"
+    }
+
     val updated = users.updateOne(User::email eq email, user).wasAcknowledged()
     return SimpleResponse(updated, message)
 }

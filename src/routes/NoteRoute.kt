@@ -42,17 +42,15 @@ fun Route.noteRoute() {
         }
     }
 
-    route("/search-note") {
+    route("/get-note") {
         authenticate {
-            post {
+            get("{id}") {
                 val email = call.principal<UserIdPrincipal>()!!.name
-                val note = try {
-                    call.receive<Note>()
-                } catch (e: ContentTransformationException) {
-                    call.respond(HttpStatusCode.BadRequest, "Json Error")
-                    return@post
-                }
-                val result = searchNote(email, note)
+                val id = call.parameters["id"] ?: return@get call.respondText(
+                    "note id not received",
+                    status = HttpStatusCode.BadRequest
+                )
+                val result = getNote(email, id)
                 call.respond(HttpStatusCode.OK, result ?: "Note not found")
             }
         }
@@ -70,15 +68,13 @@ fun Route.noteRoute() {
 
     route("/delete-note") {
         authenticate {
-            post {
+            delete("{id}") {
                 val email = call.principal<UserIdPrincipal>()!!.name
-                val noteId = try {
-                    call.receive<String>()
-                } catch (e: ContentTransformationException) {
-                    call.respond(HttpStatusCode.BadRequest, "Json Error")
-                    return@post
-                }
-                val result = deleteNote(email, noteId)
+                val id = call.parameters["id"] ?: return@delete call.respondText(
+                    "note id not received",
+                    status = HttpStatusCode.BadRequest
+                )
+                val result = deleteNote(email, id)
                 call.respond(HttpStatusCode.OK, result)
             }
         }
@@ -86,7 +82,7 @@ fun Route.noteRoute() {
 
     route("/delete-all-notes") {
         authenticate {
-            get {
+            delete {
                 val email = call.principal<UserIdPrincipal>()!!.name
                 val result = deleteAllNotes(email)
                 call.respond(HttpStatusCode.OK, result)

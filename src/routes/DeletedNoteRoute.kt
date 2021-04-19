@@ -13,15 +13,13 @@ fun Route.deletedNoteRoute() {
 
     route("/insert-deleted-note") {
         authenticate {
-            post {
+            post("{id}") {
                 val email = call.principal<UserIdPrincipal>()!!.name
-                val note = try {
-                    call.receive<Note>()
-                } catch (e: ContentTransformationException) {
-                    call.respond(HttpStatusCode.BadRequest, "Json Error")
-                    return@post
-                }
-                val result = insertDeletedNote(email, note)
+                val id = call.parameters["id"] ?: return@post call.respondText(
+                    "note id not received",
+                    status = HttpStatusCode.BadRequest
+                )
+                val result = insertDeletedNote(email, id)
                 call.respond(HttpStatusCode.OK, result)
             }
         }
@@ -55,15 +53,13 @@ fun Route.deletedNoteRoute() {
 
     route("/delete-deleted-note") {
         authenticate {
-            post {
+            delete("{id}") {
                 val email = call.principal<UserIdPrincipal>()!!.name
-                val note = try {
-                    call.receive<Note>()
-                } catch (e: ContentTransformationException) {
-                    call.respond(HttpStatusCode.BadRequest, "Json Error")
-                    return@post
-                }
-                val result = deleteDeletedNote(email, note)
+                val id = call.parameters["id"] ?: return@delete call.respondText(
+                    "note id not received",
+                    status = HttpStatusCode.BadRequest
+                )
+                val result = deleteDeletedNote(email, id)
                 call.respond(HttpStatusCode.OK, result)
             }
         }
