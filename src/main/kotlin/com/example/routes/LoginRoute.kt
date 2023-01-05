@@ -3,15 +3,12 @@ package com.example.routes
 import com.example.data.database.checkPasswordForEmail
 import com.example.data.requests.AccountRequest
 import com.example.data.response.SimpleResponse
-import io.ktor.application.call
-import io.ktor.features.ContentTransformationException
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.ktor.http.HttpStatusCode.Companion.OK
-import io.ktor.request.receive
-import io.ktor.response.respond
-import io.ktor.routing.Route
-import io.ktor.routing.post
-import io.ktor.routing.route
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 
 fun Route.loginRoute() {
     route("/login") {

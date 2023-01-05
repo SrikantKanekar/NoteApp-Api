@@ -9,7 +9,7 @@ import org.litote.kmongo.eq
 import org.litote.kmongo.reactivestreams.KMongo
 
 private const val connectionString =
-    "mongodb+srv://admin:xwtAdn7goC21S6HO@noteappcluster.pt50t.mongodb.net/Database?retryWrites=true&w=majority"
+    "mongodb+srv://admin:Xra1BUxXyM1vevs7@noteappcluster.pt50t.mongodb.net/?retryWrites=true&w=majority"
 private val client = KMongo.createClient(connectionString).coroutine
 private val database = client.getDatabase("Database")
 private val users = database.getCollection<User>()
@@ -33,13 +33,13 @@ suspend fun checkPasswordForEmail(email: String, passwordToCheck: String): Boole
 // Notes
 suspend fun insertOrUpdateNote(email: String, note: Note): SimpleResponse {
     val user = users.findOne(User::email eq email)!!
-    var message = ""
-    val index = user.notes.indexOf(note)
-    when (index) {
+    val message: String
+    when (val index = user.notes.indexOf(note)) {
         -1 -> {
             user.notes.add(note)
             message = "Note Added"
         }
+
         else -> {
             user.notes[index] = note
             message = "Note Updated at index $index"
@@ -54,12 +54,12 @@ suspend fun insertOrUpdateNotes(email: String, notes: List<Note>): SimpleRespons
     var added = 0
     var update = 0
     notes.forEach { note ->
-        val index = user.notes.indexOf(note)
-        when (index) {
+        when (val index = user.notes.indexOf(note)) {
             -1 -> {
                 user.notes.add(note)
                 added++
             }
+
             else -> {
                 user.notes[index] = note
                 update++
@@ -89,7 +89,7 @@ suspend fun getAllNotes(email: String): List<Note> {
 
 suspend fun deleteNote(email: String, noteId: String): SimpleResponse {
     val user = users.findOne(User::email eq email)!!
-    var message = ""
+    val message: String
     var note: Note? = null
     for (it in user.notes) {
         if (it.id == noteId) {
@@ -97,13 +97,14 @@ suspend fun deleteNote(email: String, noteId: String): SimpleResponse {
             break
         }
     }
-    when (note) {
+    message = when (note) {
         null -> {
-            message = "Note not found"
+            "Note not found"
         }
+
         else -> {
             user.notes.remove(note)
-            message = "Note deleted"
+            "Note deleted"
         }
     }
     val updated = users.updateOne(User::email eq email, user).wasAcknowledged()
@@ -131,11 +132,11 @@ suspend fun insertDeletedNote(email: String, noteId: String): SimpleResponse {
         }
     }
     note?.let {
-        if (!user.deletedNotes.contains(note)) {
+        message = if (!user.deletedNotes.contains(note)) {
             user.deletedNotes.add(note)
-            message = "Note added to delete folder"
+            "Note added to delete folder"
         } else {
-            message = "Note is already present in delete folder"
+            "Note is already present in delete folder"
         }
     }
     val updated = users.updateOne(User::email eq email, user).wasAcknowledged()
@@ -147,12 +148,12 @@ suspend fun insertDeletedNotes(email: String, notes: List<Note>): SimpleResponse
     var added = 0
     var update = 0
     notes.forEach { note ->
-        val index = user.deletedNotes.indexOf(note)
-        when (index) {
+        when (val index = user.deletedNotes.indexOf(note)) {
             -1 -> {
                 user.deletedNotes.add(note)
                 added++
             }
+
             else -> {
                 user.deletedNotes[index] = note
                 update++
