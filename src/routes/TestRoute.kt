@@ -7,7 +7,7 @@ import io.ktor.routing.*
 fun Route.homeRoute() {
     route("/") {
         get {
-            call.respondText("Hi, this is Ktor note server")
+            call.respondText("Hi, this is Ktor note server!")
         }
     }
 }
