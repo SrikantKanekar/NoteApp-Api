@@ -30,6 +30,7 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-cors:$ktorVersion")
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
+    implementation("io.ktor:ktor-server-request-validation:$ktorVersion")
 
     // Auth
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
@@ -56,9 +57,6 @@ dependencies {
 
     // Password hash
     implementation("commons-codec:commons-codec:1.15")
-
-    // input validator
-    implementation("io.konform:konform-jvm:0.4.0")
 
     // Date time
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")

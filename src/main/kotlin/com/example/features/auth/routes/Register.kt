@@ -21,7 +21,6 @@ fun Route.registerRoute(authRepository: AuthRepository, jwt: JWTConfig) {
         if (password1 == password2) {
             val userExists = authRepository.doesUserExist(email)
             if (!userExists) {
-
                 val newUser = User(email, generateHash(password1), username)
                 authRepository.register(newUser)
                 val token = generateJwtToken(jwt, newUser)

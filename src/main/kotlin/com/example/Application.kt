@@ -23,5 +23,6 @@ fun Application.module(
     contentNegotiationSetup()
     corsSetup()
     authSetup()
+    requestValidationSetup()
     routesSetup()
 }
