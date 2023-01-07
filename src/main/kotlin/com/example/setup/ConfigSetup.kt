@@ -2,7 +2,6 @@ package com.example.setup
 
 import com.example.config.AppConfig
 import com.example.config.JWTConfig
-import com.example.util.JWT_AUTH_SECRET
 import io.ktor.server.application.*
 import org.koin.ktor.ext.inject
 
