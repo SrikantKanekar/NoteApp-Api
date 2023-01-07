@@ -1,4 +1,4 @@
-package com.example.features.util.routes
+package com.example.features.util
 
 import io.ktor.server.application.*
 import io.ktor.server.response.*

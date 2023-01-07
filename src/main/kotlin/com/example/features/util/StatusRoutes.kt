@@ -1,4 +1,4 @@
-package com.example.features.util.routes
+package com.example.features.util
 
 import com.example.util.DatabaseException
 import com.example.util.ValidationException
