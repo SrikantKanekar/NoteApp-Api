@@ -1,19 +1,19 @@
-package com.example.security
+package com.example.util
 
 import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
 import java.security.SecureRandom
 
-fun getHashWithSalt(stringToHash: String, saltLength: Int = 32): String {
+fun generateHash(password: String, saltLength: Int = 32): String {
     val salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLength)
     val saltAsHex = Hex.encodeHexString(salt)
-    val hash = DigestUtils.sha256Hex("$saltAsHex$stringToHash")
+    val hash = DigestUtils.sha256Hex("$saltAsHex$password")
     return "$saltAsHex:$hash"
 }
 
-fun checkHashForPassword(password: String, hashWithSalt: String): Boolean {
+fun checkPassword(password: String, hashWithSalt: String): Boolean {
     val hashAndSalt = hashWithSalt.split(":")
-    if(hashAndSalt.size != 2) {
+    if (hashAndSalt.size != 2) {
         return false
     }
     val salt = hashAndSalt[0]

@@ -1,6 +1,6 @@
 package com.example
 
-import com.example.routes.homeRoute
+import com.example.features.util.routes.homeRoute
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*

@@ -1,34 +1,21 @@
-package com.example.data.database
+package com.example.database
 
-import com.example.data.model.Note
-import com.example.data.model.User
-import com.example.data.response.SimpleResponse
-import com.example.security.checkHashForPassword
+import com.example.model.Note
+import com.example.model.User
+import kotlinx.serialization.Serializable
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.reactivestreams.KMongo
 
-private const val connectionString =
+private const val MONGODB_URI =
     "mongodb+srv://admin:PKgpCMz3ikI8XQAR@noteappcluster.pt50t.mongodb.net/?retryWrites=true&w=majority"
-private val client = KMongo.createClient(connectionString).coroutine
-private val database = client.getDatabase("Database")
-private val users = database.getCollection<User>()
+private const val DATABASE_NAME = "DATABASE"
+const val COLLECTION_USER = "USERS"
 
-
-// Account
-suspend fun registerUser(user: User): Boolean {
-    return users.insertOne(user).wasAcknowledged()
-}
-
-suspend fun checkIfUserExists(email: String): Boolean {
-    return users.findOne(User::email eq email) != null
-}
-
-suspend fun checkPasswordForEmail(email: String, passwordToCheck: String): Boolean {
-    val actualPassword = users.findOne(User::email eq email)?.password ?: return false
-    return checkHashForPassword(passwordToCheck, actualPassword)
-}
-
+private val mongoDbString = System.getenv("MONGODB_URI") ?: MONGODB_URI
+private val client = KMongo.createClient(mongoDbString).coroutine
+private val database = client.getDatabase(DATABASE_NAME)
+val users = database.getCollection<User>(COLLECTION_USER)
 
 // Notes
 suspend fun insertOrUpdateNote(email: String, note: Note): SimpleResponse {
@@ -118,3 +105,9 @@ suspend fun deleteAllNotes(email: String): SimpleResponse {
     val updated = users.updateOne(User::email eq email, user).wasAcknowledged()
     return SimpleResponse(updated, "deleted $count notes")
 }
+
+@Serializable
+data class SimpleResponse(
+    val successful: Boolean,
+    val message: String
+)

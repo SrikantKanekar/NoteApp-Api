@@ -1,7 +1,8 @@
-package com.example.routes
+package com.example.features.notes.routes
 
-import com.example.data.database.*
-import com.example.data.model.Note
+import com.example.database.*
+import com.example.model.Note
+import com.example.util.USER_AUTH
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -11,7 +12,7 @@ import io.ktor.server.routing.*
 
 fun Route.noteRoute() {
     route("/insert-or-update-note") {
-        authenticate {
+        authenticate(USER_AUTH) {
             post {
                 val email = call.principal<UserIdPrincipal>()!!.name
                 val note = try {
@@ -27,7 +28,7 @@ fun Route.noteRoute() {
     }
 
     route("/insert-or-update-notes") {
-        authenticate {
+        authenticate(USER_AUTH) {
             post {
                 val email = call.principal<UserIdPrincipal>()!!.name
                 val notes = try {
@@ -43,7 +44,7 @@ fun Route.noteRoute() {
     }
 
     route("/get-note") {
-        authenticate {
+        authenticate(USER_AUTH) {
             get("{id}") {
                 val email = call.principal<UserIdPrincipal>()!!.name
                 val id = call.parameters["id"] ?: return@get call.respondText(
@@ -57,7 +58,7 @@ fun Route.noteRoute() {
     }
 
     route("/get-all-notes") {
-        authenticate {
+        authenticate(USER_AUTH) {
             get {
                 val email = call.principal<UserIdPrincipal>()!!.name
                 val result = getAllNotes(email)
@@ -67,7 +68,7 @@ fun Route.noteRoute() {
     }
 
     route("/delete-note") {
-        authenticate {
+        authenticate(USER_AUTH) {
             delete("{id}") {
                 val email = call.principal<UserIdPrincipal>()!!.name
                 val id = call.parameters["id"] ?: return@delete call.respondText(
@@ -81,7 +82,7 @@ fun Route.noteRoute() {
     }
 
     route("/delete-all-notes") {
-        authenticate {
+        authenticate(USER_AUTH) {
             delete {
                 val email = call.principal<UserIdPrincipal>()!!.name
                 val result = deleteAllNotes(email)

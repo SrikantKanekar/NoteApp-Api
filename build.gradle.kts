@@ -28,6 +28,8 @@ dependencies {
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-cors:$ktorVersion")
+    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
 
     // Auth
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
@@ -57,6 +59,9 @@ dependencies {
 
     // input validator
     implementation("io.konform:konform-jvm:0.4.0")
+
+    // Date time
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
     // Testing
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
