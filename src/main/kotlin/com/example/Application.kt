@@ -39,6 +39,5 @@ fun Application.module(testing: Boolean = false) {
         registerRoute()
         loginRoute()
         noteRoute()
-        deletedNoteRoute()
     }
 }
