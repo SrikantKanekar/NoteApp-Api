@@ -7,8 +7,8 @@ data class Note(
     val id: String,
     val title: String,
     val body: String,
-    val updated_at: String,
-    val created_at: String
+    val updatedAt: String,
+    val createdAt: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
