@@ -1,6 +1,7 @@
-val ktor_version: String by project
-val kotlin_version: String by project
-val logback_version: String by project
+val ktorVersion: String by project
+val kotlinVersion: String by project
+val logbackVersion: String by project
+val koinVersion: String by project
 
 plugins {
     kotlin("jvm") version "1.8.0"
@@ -9,7 +10,7 @@ plugins {
 }
 
 group = "com.example"
-version = "0.0.1"
+version = "1.0.0"
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 
@@ -22,20 +23,42 @@ repositories {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
 
+    // Ktor
+    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
+
+    // Auth
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
+
+    // Sessions
+    implementation("io.ktor:ktor-server-sessions:$ktorVersion")
+
+    // MongoDB Database
     implementation("org.litote.kmongo:kmongo:4.8.0")
     implementation("org.litote.kmongo:kmongo-coroutine:4.8.0")
 
-    implementation("io.ktor:ktor-network-tls:$ktor_version")
+    // Serialization
+    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktorVersion")
 
-    implementation("commons-codec:commons-codec:1.14")
+    // Koin Dependency injection)
+    implementation("io.insert-koin:koin-ktor:$koinVersion")
+    implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
+    testImplementation("io.insert-koin:koin-test:$koinVersion")
+    testImplementation("io.insert-koin:koin-test-junit5:$koinVersion")
 
-    testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    // Logging
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+
+    // Password hash
+    implementation("commons-codec:commons-codec:1.15")
+
+    // input validator
+    implementation("io.konform:konform-jvm:0.4.0")
+
+    // Testing
+    testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
 }
