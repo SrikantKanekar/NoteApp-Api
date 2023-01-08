@@ -3,6 +3,7 @@ package com.example.features.auth.routes
 import com.example.config.JWTConfig
 import com.example.features.auth.data.AuthRepository
 import com.example.features.auth.requests.LoginRequest
+import com.example.features.auth.response.AuthResponse
 import com.example.setup.generateJwtToken
 import com.example.util.EMAIL_PASSWORD_INCORRECT
 import io.ktor.http.*
@@ -19,7 +20,14 @@ fun Route.loginRoute(authRepository: AuthRepository, jwt: JWTConfig) {
         if (isPasswordCorrect) {
             val user = authRepository.getUser(email)
             val token = generateJwtToken(jwt, user)
-            call.respond(token)
+            call.respond(
+                AuthResponse(
+                    email = user.email,
+                    token = token,
+                    username = user.username,
+                    isAdmin = user.isAdmin,
+                ),
+            )
         } else {
             call.respond(HttpStatusCode.BadRequest, EMAIL_PASSWORD_INCORRECT)
         }

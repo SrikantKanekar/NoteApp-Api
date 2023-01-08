@@ -3,6 +3,7 @@ package com.example.features.auth.routes
 import com.example.config.JWTConfig
 import com.example.features.auth.data.AuthRepository
 import com.example.features.auth.requests.RegisterRequest
+import com.example.features.auth.response.AuthResponse
 import com.example.model.User
 import com.example.setup.generateJwtToken
 import com.example.util.EMAIL_ALREADY_TAKEN
@@ -24,7 +25,14 @@ fun Route.registerRoute(authRepository: AuthRepository, jwt: JWTConfig) {
                 val newUser = User(email, generateHash(password1), username)
                 authRepository.register(newUser)
                 val token = generateJwtToken(jwt, newUser)
-                call.respond(token)
+                call.respond(
+                    AuthResponse(
+                        email = newUser.email,
+                        token = token,
+                        username = newUser.username,
+                        isAdmin = newUser.isAdmin,
+                    ),
+                )
             } else {
                 call.respond(HttpStatusCode.BadRequest, EMAIL_ALREADY_TAKEN)
             }
