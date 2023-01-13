@@ -8,7 +8,11 @@ data class Note(
     val title: String,
     val body: String,
     val updatedAt: String,
-    val createdAt: String
+    val createdAt: String,
+    val state: String,
+    val pinned: Boolean,
+    val color: Int,
+    val labels: List<String>
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

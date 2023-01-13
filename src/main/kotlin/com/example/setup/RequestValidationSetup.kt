@@ -3,6 +3,8 @@ package com.example.setup
 import com.example.features.auth.requests.loginRequestValidator
 import com.example.features.auth.requests.registerRequestValidator
 import com.example.features.auth.requests.resetPasswordRequestValidator
+import com.example.features.labels.requests.labelDeleteRequestValidator
+import com.example.features.labels.requests.labelInsertOrUpdateRequestValidator
 import com.example.features.notes.requests.noteDeleteRequestValidator
 import com.example.features.notes.requests.noteInsertOrUpdateRequestValidator
 import io.ktor.server.application.*
@@ -13,7 +15,11 @@ fun Application.requestValidationSetup() {
         loginRequestValidator()
         registerRequestValidator()
         resetPasswordRequestValidator()
+
         noteInsertOrUpdateRequestValidator()
         noteDeleteRequestValidator()
+
+        labelInsertOrUpdateRequestValidator()
+        labelDeleteRequestValidator()
     }
 }

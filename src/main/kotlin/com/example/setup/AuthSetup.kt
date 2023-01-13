@@ -37,21 +37,6 @@ fun Application.authSetup() {
             }
         }
     }
-
-//    install(Authentication) {
-//        basic {
-//            realm = "Note Server"
-//            validate { credentials ->
-//                val email = credentials.name
-//                val password = credentials.password
-//
-//                when (checkPasswordForEmail(email, password)) {
-//                    true -> UserIdPrincipal(email)
-//                    false -> null
-//                }
-//            }
-//        }
-//    }
 }
 
 fun getJwtVerifier(config: JWTConfig): JWTVerifier {

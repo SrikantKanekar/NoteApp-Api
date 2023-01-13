@@ -9,4 +9,5 @@ data class User(
     var username: String,
     val isAdmin: Boolean = false,
     val notes: ArrayList<Note> = ArrayList(),
+    val labels: ArrayList<Label> = ArrayList()
 )

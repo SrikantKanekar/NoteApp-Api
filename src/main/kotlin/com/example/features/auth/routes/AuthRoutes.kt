@@ -15,8 +15,8 @@ fun Application.registerAuthRoutes() {
 
     routing {
         route("/auth") {
-            loginRoute(authRepository, appConfig.jwtConfig)
             registerRoute(authRepository, appConfig.jwtConfig)
+            loginRoute(authRepository, appConfig.jwtConfig)
 
             authenticate(USER_AUTH) {
                 resetPassword(authRepository)
