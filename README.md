@@ -1,16 +1,31 @@
 # NoteApp-Api
 
-description
+Rest Api for Note Android and iOS applications
 
 ## API Reference
 
-#### Get all items
+### Authentication
+
+#### Login
 
 ```http
-  GET /api/items
+  POST /auth/login
 ```
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
+| `email` | `string` | **Required**. Your email |
+| `password` | `string` | **Required**. Your password |
 
+#### Register
+
+```http
+  POST /auth/register
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `username` | `string` | **Required**. Your username |
+| `email` | `string` | **Required**. Your email |
+| `password1` | `string` | **Required**. Your password |
+| `password2` | `string` | **Required**. Your confirmed password |
