@@ -1,4 +1,4 @@
-# NoteApp-Api
+# Note Api
 
 Rest Api for Note Android and iOS applications
 
