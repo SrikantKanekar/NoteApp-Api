@@ -2,7 +2,7 @@
 
 Rest Api for Note Android and iOS applications
 
-Android client - https://github.com/SrikantKanekar/NoteApp-Android
+Android client - https://github.com/SrikantKanekar/NoteApp-Android </br>
 iOS client - https://github.com/SrikantKanekar/NoteApp-iOS
 
 ## API Reference
