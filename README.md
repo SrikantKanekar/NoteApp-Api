@@ -1,6 +1,6 @@
 # Note Api
 
-Backend of Note-taking Android and iOS applications
+Backend for Android and iOS note-taking apps.
 
 Android client - https://github.com/SrikantKanekar/NoteApp-Android </br>
 iOS client - https://github.com/SrikantKanekar/NoteApp-iOS
