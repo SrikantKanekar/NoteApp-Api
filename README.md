@@ -1,6 +1,6 @@
 # Note Api
 
-Rest Api for Note Android and iOS applications
+Backend of Note-taking Android and iOS applications
 
 Android client - https://github.com/SrikantKanekar/NoteApp-Android </br>
 iOS client - https://github.com/SrikantKanekar/NoteApp-iOS
